@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = "rule")
 public class Rule {
     @Id
-    private Long id;
+    private int id;
     private String name;
     private int points;
     private float min_bound;
