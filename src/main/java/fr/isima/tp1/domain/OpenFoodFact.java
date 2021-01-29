@@ -1,4 +1,4 @@
-package fr.isima.tp1.service;
+package fr.isima.tp1.domain;
 
 import com.google.gson.Gson;
 import fr.isima.tp1.model.ProductData;

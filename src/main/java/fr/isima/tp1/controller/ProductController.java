@@ -1,8 +1,8 @@
-package fr.isima.tp1.controllers;
+package fr.isima.tp1.controller;
 
 import com.google.gson.Gson;
 import fr.isima.tp1.model.Rule;
-import fr.isima.tp1.service.OpenFoodFact;
+import fr.isima.tp1.domain.OpenFoodFact;
 import fr.isima.tp1.model.ProductData;
 import fr.isima.tp1.model.Product;
 import fr.isima.tp1.service.ProductService;
@@ -24,7 +24,8 @@ public class ProductController {
     public String getProductById(@PathVariable final String id) {
         try {
             ProductData p = OpenFoodFact.getProductById(id);
-            return new Gson().toJson(new Product(p));
+
+            return new Gson().toJson(new Product(p, rs.calulateNutritionScore(p)));
         } catch (IOException e) {
             e.printStackTrace();
         }

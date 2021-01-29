@@ -1,4 +1,4 @@
-package fr.isima.tp1.repository;
+package fr.isima.tp1.model;
 
 
 import fr.isima.tp1.model.Rule;

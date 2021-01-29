@@ -9,10 +9,10 @@ public class Product {
 
 
 
-    public Product(ProductData p) {
+    public Product(ProductData p, int score) {
         this.barCode = p.code;
         this.name = p.product.generic_name_fr;
-        this.nutritionScore = p.product.nutriments.salt_100g;
+        this.nutritionScore = score;
     }
 
 }
