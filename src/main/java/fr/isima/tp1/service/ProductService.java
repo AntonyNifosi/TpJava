@@ -28,11 +28,11 @@ public class ProductService {
 
     private int calculateNScore(ProductData p){
         int score = 0;
-        String[] fields = {"energy_100g", "salt_100g", "saturatedfat_100g", "sugars_100g"};
+        String[] fields = {"energy_100g", "salt_100g", "saturated-fat_100g", "sugars_100g"};
         float[] fieldsValues = { p.product.nutriments.energy_100g,
-                                 p.product.nutriments.salt_100g,
-                                 p.product.nutriments.saturatedfat_100g,
-                                 p.product.nutriments.sugars_100g };
+                                  p.product.nutriments.salt_100g,
+                                  p.product.nutriments.saturatedfat_100g,
+                                  p.product.nutriments.sugars_100g };
 
         for (int i = 0; i < fields.length; i++) {
             System.out.println("Retour de la requete : " + ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]));

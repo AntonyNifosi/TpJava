@@ -11,7 +11,7 @@ public class Rule implements Comparable<Rule> {
     private int id;
     private String name;
     private int points;
-    private float min_bound;
+    private double min_bound;
     private String component;
 
     public int getId() {
@@ -38,7 +38,7 @@ public class Rule implements Comparable<Rule> {
         this.points = points;
     }
 
-    public float getMin_bound() {
+    public double getMin_bound() {
         return min_bound;
     }
 

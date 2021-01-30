@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RuleRepository extends JpaRepository<Rule, Integer> {
     @Query("SELECT MAX(r.points) FROM Rule r WHERE  ?1 >= r.min_bound AND r.name = ?2")
-    Integer findByNameAndValue(float value, String name);
+    Integer findByNameAndValue(double value, String name);
 }
