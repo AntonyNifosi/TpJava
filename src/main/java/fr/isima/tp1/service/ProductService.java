@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -25,54 +22,45 @@ public class ProductService {
         return ruleRepository.findAll();
     }
 
-    private int calculateNutritionScore(ProductData p){
-        int score = 0;
-        List<Rule> rules = ruleRepository.findAll();
-        Field[] fields = p.product.nutriments.getClass().getFields();
-        List<Rule> trueRules = new ArrayList<>();
-        for (Field f: fields){
-            f.setAccessible(true);
-            List<Rule> tmp = rules.stream().filter(r -> r.getName().equals(f.getName())).collect(Collectors.toList());
-            int i = 0;
-            float minB = 0;
-            Rule previousBound = tmp.get(0);
-            try {
-                minB = (float)f.get(p.product.nutriments);
-                if (f.getName().equals("salt_100g"))
-                    minB *= 100;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            while (i < tmp.size() && minB > tmp.get(i).getMin_bound()) {
-                previousBound = tmp.get(i);
-                i++;
-            }
-            trueRules.add(previousBound);
-        }
+    private int calculateNutritionScore(ProductData p) {
+        return calculateNScore(p) - calculatePScore(p);
+    }
 
-        for (Rule r: trueRules) {
-            if (r.getComponent().equals("P"))
-                score -= r.getPoints();
-            else
-                score += r.getPoints();
+    private int calculateNScore(ProductData p){
+        int score = 0;
+        String[] fields = {"energy_100g", "salt_100g", "saturatedfat_100g", "sugars_100g"};
+        float[] fieldsValues = { p.product.nutriments.energy_100g,
+                                 p.product.nutriments.salt_100g,
+                                 p.product.nutriments.saturatedfat_100g,
+                                 p.product.nutriments.sugars_100g };
+
+        for (int i = 0; i < fields.length; i++) {
+            System.out.println("Retour de la requete : " + ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]));
+            score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);
         }
+        System.out.println("Valur du score N : " + score);
 
         return score;
     }
-    private String[] calculateRating(int score) {
-        List<NutritionScore> nutritionScores = nutritionRepository.findAll();
-        int i = 0;
-        System.out.println("Score du produit : " + score);
 
-        while (i < nutritionScores.size() && !(score >= nutritionScores.get(i).getLower_bound() && score <= nutritionScores.get(i).getUpper_bound())) {
-            System.out.println("Calcul du rang - Valeur de i : " + i);
-            i++;
+    private int calculatePScore(ProductData p){
+        int score = 0;
+        String[] fields = {"fiber_100g", "proteins_100g"};
+        float[] fieldsValues = { p.product.nutriments.fiber_100g,
+                                 p.product.nutriments.proteins_100g };
+
+        for (int i = 0; i < fields.length; i++) {
+            score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);
         }
+        System.out.println("Valur du score P : " + score);
 
-        if (i >= nutritionScores.size())
-            i = nutritionScores.size() - 1;
+        return score;
+    }
 
-        return new String[]{nutritionScores.get(i).getClasse(), nutritionScores.get(i).getColor()};
+    private String[] calculateRating(int score) {
+        NutritionScore nutritionScores = nutritionRepository.findByScore(score);
+
+        return new String[]{nutritionScores.getClasse(), nutritionScores.getColor()};
     }
 
     public Product toProduct(ProductData p) {

@@ -14,6 +14,18 @@ public class NutritionScore {
     private int upper_bound;
     private String color;
 
+
+    public NutritionScore() {
+
+    }
+
+    public NutritionScore(String classe, int lower_bound, int upper_bound, String color) {
+        this.classe = classe;
+        this.lower_bound = lower_bound;
+        this.upper_bound = upper_bound;
+        this.color = color;
+    }
+
     public int getId() {
         return id;
     }
