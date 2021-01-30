@@ -23,9 +23,7 @@ public class ProductController {
     @RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public String getProductById(@PathVariable final String id) {
         try {
-            ProductData p = OpenFoodFact.getProductById(id);
-
-            return new Gson().toJson(new Product(p, rs.calulateNutritionScore(p)));
+            return new Gson().toJson(rs.toProduct(OpenFoodFact.getProductById(id)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +32,6 @@ public class ProductController {
 
     @RequestMapping(value = "/rules", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Rule> getRules() {
-           // System.out.println(rs.getAll());
             return rs.getAll();
         }
 }
