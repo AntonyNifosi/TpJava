@@ -14,6 +14,7 @@ import java.util.List;
     - Calcul du score nutritrionnel
     - Calcul du rang du produit en fonction de son score
     - Conversion d'un Product_Data en Product
+    - Stockage d'un  Product dans le ProductRepository
  */
 @Service
 public class ProductService {
@@ -72,6 +73,10 @@ public class ProductService {
 
         if (product == null) {
             ProductData pData = OpenFoodFact.getProductById(barCode);
+            if (pData.product == null) {
+                throw new IOException("Code barre invalide");
+            }
+
             product = toProduct(pData);
             productRepository.save(product);
         }

@@ -19,13 +19,13 @@ import java.io.IOException;
 public class ProductController {
 
     @Autowired
-    private ProductService rs;
+    private ProductService ps;
 
     /* Route pour l'accès aux informations d'un produit avec son code bar */
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable final String id) {
         try {
-            return ResponseEntity.ok(rs.getProductByBarcode(id));
+            return ResponseEntity.ok(ps.getProductByBarcode(id));
         } catch (IOException e) {
             return ResponseEntity.notFound().build();
         }

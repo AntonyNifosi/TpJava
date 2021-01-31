@@ -8,7 +8,7 @@ public class ProductData {
     public String code;
     public Product product;
     public class Product {
-        public String generic_name_fr;
+        public String generic_name;
         public Nutriments nutriments;
         public class Nutriments{
             public float energy_100g;
@@ -35,7 +35,7 @@ public class ProductData {
         @Override
         public String toString() {
             return "Product{" +
-                    "generic_name_fr='" + generic_name_fr + '\'' +
+                    "generic_name_fr='" + generic_name + '\'' +
                     ", nutriments=" + nutriments +
                     '}';
         }

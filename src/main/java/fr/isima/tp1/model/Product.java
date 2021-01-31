@@ -22,7 +22,16 @@ public class Product {
 
     public Product(ProductData p) {
         this.barCode = p.code;
-        this.name = p.product.generic_name_fr;
+        this.name = p.product.generic_name;
+    }
+
+    /* Constructeur fait pour les tests */
+    public Product(String barCode, String name, float nutritionScore, String classe, String color) {
+        this.barCode = barCode;
+        this.name = name;
+        this.nutritionScore = nutritionScore;
+        this.classe = classe;
+        this.color = color;
     }
 
     public long getId() {
