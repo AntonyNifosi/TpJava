@@ -30,12 +30,12 @@ public class NutritionScoreRepositoryTest {
     public void findByScoreLimitsTest() {
 
 
-        //Test de la taille totale
+        /* Test de la taille de base */
         List<NutritionScore> nsList = repository.findAll();
         assertEquals(nsList.size(), 5);
 
 
-        //Test des différentes bornes pour le score nutritionnel
+        /* Tests des bornes */
         NutritionScore ns = repository.findByScore(-10);
         assertEquals(ns.getId(), 1);
 

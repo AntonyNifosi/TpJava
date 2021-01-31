@@ -6,8 +6,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "product")
 public class Product {
-    @Column(name = "id" )
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
     private String barCode;
     private String name;

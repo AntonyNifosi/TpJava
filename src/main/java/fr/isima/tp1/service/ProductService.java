@@ -20,11 +20,13 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    protected RuleRepository ruleRepository;
+    private RuleRepository ruleRepository;
+
     @Autowired
-    protected NutritionScoreRepository nutritionRepository;
+    private NutritionScoreRepository nutritionRepository;
+
     @Autowired
-    protected ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     public List<Rule> getAll() {
         return ruleRepository.findAll();
@@ -34,13 +36,13 @@ public class ProductService {
         return calculateNScore(p) - calculatePScore(p);
     }
 
-    private int calculateNScore(ProductData p){
+    private int calculateNScore(ProductData p) {
         int score = 0;
         String[] fields = {"energy_100g", "salt_100g", "saturated-fat_100g", "sugars_100g"};
-        float[] fieldsValues = { p.product.nutriments.energy_100g,
-                                  p.product.nutriments.salt_100g,
-                                  p.product.nutriments.saturatedfat_100g,
-                                  p.product.nutriments.sugars_100g };
+        float[] fieldsValues = {p.product.nutriments.energy_100g,
+                p.product.nutriments.salt_100g,
+                p.product.nutriments.saturatedfat_100g,
+                p.product.nutriments.sugars_100g};
 
         for (int i = 0; i < fields.length; i++) {
             score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);
@@ -49,11 +51,11 @@ public class ProductService {
         return score;
     }
 
-    private int calculatePScore(ProductData p){
+    private int calculatePScore(ProductData p) {
         int score = 0;
         String[] fields = {"fiber_100g", "proteins_100g"};
-        float[] fieldsValues = { p.product.nutriments.fiber_100g,
-                                 p.product.nutriments.proteins_100g };
+        float[] fieldsValues = {p.product.nutriments.fiber_100g,
+                p.product.nutriments.proteins_100g};
 
         for (int i = 0; i < fields.length; i++) {
             score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);

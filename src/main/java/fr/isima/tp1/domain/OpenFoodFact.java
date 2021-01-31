@@ -12,7 +12,7 @@ import java.net.URL;
 public class OpenFoodFact {
     private static final String BASE_URL = "https://fr.openfoodfacts.org/api/v0/produit";
 
-    public static ProductData toProductData(Reader reader){
+    public static ProductData toProductData(Reader reader) {
         ProductData p = new Gson().fromJson(reader, ProductData.class);
         return p;
     }
@@ -22,8 +22,8 @@ public class OpenFoodFact {
         StringBuilder urlStringBuilder = new StringBuilder();
         urlStringBuilder.append(BASE_URL).append("/").append(id);
 
-        try(InputStream is = new URL(urlStringBuilder.toString()).openStream();
-            Reader reader = new InputStreamReader(is)) {
+        try (InputStream is = new URL(urlStringBuilder.toString()).openStream();
+             Reader reader = new InputStreamReader(is)) {
             return toProductData(reader);
         }
     }

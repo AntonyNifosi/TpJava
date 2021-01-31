@@ -12,13 +12,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.sun.javaws.JnlpxArgs.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
-public class ProductControllerTest
-{
+public class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
@@ -26,29 +26,29 @@ public class ProductControllerTest
     private MockMvc mockMvc;
 
     @Test
-    public void ExistingBarcodeTest() throws Exception {
-        String barcode = "3256540000698";
-        Product product = new Product(barcode, "Pains au lait au levain", 4, "Mangeable", "yellow");
+    public void validBarCodeTest() throws Exception {
+        String barCode = "3256540000698";
+        Product product = new Product(barCode, "Pains au lait au levain", 4, "Mangeable", "yellow");
 
-        Mockito.when(productService.getProductByBarcode(barcode)).thenReturn(product);
+        Mockito.when(productService.getProductByBarcode(barCode)).thenReturn(product);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/product/"+barcode))
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/" + barCode))
                 .andExpect(content().string("{\"id\":0," +
-                                                           "\"barCode\":\"3256540000698\"," +
-                                                           "\"name\":\"Pains au lait au levain\"," +
-                                                           "\"nutritionScore\":4.0," +
-                                                           "\"classe\":\"Mangeable\"," +
-                                                           "\"color\":\"yellow\"}"));
+                        "\"barCode\":\"3256540000698\"," +
+                        "\"name\":\"Pains au lait au levain\"," +
+                        "\"nutritionScore\":4.0," +
+                        "\"classe\":\"Mangeable\"," +
+                        "\"color\":\"yellow\"}"));
     }
 
     @Test
-    public void NonExistingBarcodeTest() throws Exception {
-        String barcode = "0000000000";
-        Product product = new Product(barcode, "Jambon cuit de qualite superieure", -4, "Trop Bon", "green");
+    public void invalidBarCodeTest() throws Exception {
+        String barCode = "32565400006";
+        Product product = new Product(barCode, "Pains au lait au levain", 4, "Mangeable", "yellow");
 
-        Mockito.when(productService.getProductByBarcode(barcode)).thenReturn(null);
+        Mockito.when(productService.getProductByBarcode(barCode)).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/product/"+barcode))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/product/" + barCode))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));
     }
