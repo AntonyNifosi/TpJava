@@ -1,14 +1,20 @@
 package fr.isima.tp1.service;
 
+import fr.isima.tp1.domain.OpenFoodFact;
 import fr.isima.tp1.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.util.List;
 
 
-
+/* Classe gérant tous les services concernant les produits comme :
+    - Calcul du score nutritrionnel
+    - Calcul du rang du produit en fonction de son score
+    - Conversion d'un Product_Data en Product
+ */
 @Service
 public class ProductService {
 
@@ -16,9 +22,10 @@ public class ProductService {
     protected RuleRepository ruleRepository;
     @Autowired
     protected NutritionScoreRepository nutritionRepository;
+    @Autowired
+    protected ProductRepository productRepository;
 
     public List<Rule> getAll() {
-
         return ruleRepository.findAll();
     }
 
@@ -35,10 +42,8 @@ public class ProductService {
                                   p.product.nutriments.sugars_100g };
 
         for (int i = 0; i < fields.length; i++) {
-            System.out.println("Retour de la requete : " + ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]));
             score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);
         }
-        System.out.println("Valur du score N : " + score);
 
         return score;
     }
@@ -52,7 +57,6 @@ public class ProductService {
         for (int i = 0; i < fields.length; i++) {
             score += ruleRepository.findByNameAndValue(fieldsValues[i], fields[i]);
         }
-        System.out.println("Valur du score P : " + score);
 
         return score;
     }
@@ -61,6 +65,17 @@ public class ProductService {
         NutritionScore nutritionScores = nutritionRepository.findByScore(score);
 
         return new String[]{nutritionScores.getClasse(), nutritionScores.getColor()};
+    }
+
+    public Product getProductByBarcode(String barCode) throws IOException {
+        Product product = productRepository.findByBarCode(barCode);
+
+        if (product == null) {
+            ProductData pData = OpenFoodFact.getProductById(barCode);
+            product = toProduct(pData);
+            productRepository.save(product);
+        }
+        return product;
     }
 
     public Product toProduct(ProductData p) {

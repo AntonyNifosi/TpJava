@@ -4,9 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/* Model pour la table rule dans la base de données */
 @Entity
 @Table(name = "RULE")
-public class Rule implements Comparable<Rule> {
+public class Rule {
     @Id
     private int id;
     private String name;
@@ -63,13 +64,5 @@ public class Rule implements Comparable<Rule> {
                 ", min_bound=" + min_bound +
                 ", component='" + component + '\'' +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Rule rule) {
-        if (this.min_bound == rule.min_bound)
-            return 0;
-        else
-            return (this.min_bound < rule.min_bound)? -1 : 1;
     }
 }

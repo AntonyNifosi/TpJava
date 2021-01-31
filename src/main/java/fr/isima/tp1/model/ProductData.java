@@ -2,6 +2,7 @@ package fr.isima.tp1.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/* Model pour récupération des données JSON d'un produit */
 public class ProductData {
 
     public String code;

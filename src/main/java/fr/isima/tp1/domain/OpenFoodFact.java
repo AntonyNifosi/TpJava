@@ -15,14 +15,14 @@ public class OpenFoodFact {
         return p;
     }
 
+    /* Requête d'un produit à l'API FoodFact d'après son code bar */
     public static ProductData getProductById(String id) throws IOException {
         StringBuilder urlStringBuilder = new StringBuilder();
         urlStringBuilder.append(BASE_URL).append("/").append(id);
 
         try(InputStream is = new URL(urlStringBuilder.toString()).openStream();
-            Reader reader = new InputStreamReader(is)){
+            Reader reader = new InputStreamReader(is)) {
             return toProductData(reader);
         }
     }
-
 }

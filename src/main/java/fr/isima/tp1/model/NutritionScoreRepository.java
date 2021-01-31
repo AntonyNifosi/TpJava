@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
+/* Repository pour les requêtes sur la table nutrition_score */
 @Repository
 public interface NutritionScoreRepository extends JpaRepository<NutritionScore, Integer> {
-
     @Query("SELECT ns FROM NutritionScore ns WHERE ?1 <= ns.upper_bound AND ?1 >= ns.lower_bound")
     NutritionScore findByScore(int score);
 }

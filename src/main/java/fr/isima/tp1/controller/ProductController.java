@@ -8,30 +8,26 @@ import fr.isima.tp1.model.Product;
 import fr.isima.tp1.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService rs;
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public String getProductById(@PathVariable final String id) {
+    /* Route pour l'accès aux informations d'un produit avec son code bar */
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable final String id) {
         try {
-            return new Gson().toJson(rs.toProduct(OpenFoodFact.getProductById(id)));
+            return ResponseEntity.ok(rs.getProductByBarcode(id));
         } catch (IOException e) {
-            e.printStackTrace();
+            return ResponseEntity.notFound().build();
         }
-        return null;
     }
-
-    @RequestMapping(value = "/rules", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Rule> getRules() {
-            return rs.getAll();
-        }
 }

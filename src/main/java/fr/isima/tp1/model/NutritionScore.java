@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/* Model pour la table nutrition_score dans la base de données */
 @Entity
 @Table(name = "NUTRITION_SCORE")
 public class NutritionScore {
@@ -26,6 +27,7 @@ public class NutritionScore {
         this.color = color;
     }
 
+    /* Getter et Setter */
     public int getId() {
         return id;
     }
